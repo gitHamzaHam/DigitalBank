@@ -149,16 +149,16 @@
                 <tbody class="divide-y divide-slate-50">
                     <c:forEach var="p" items="${prets}">
 
-                        <%-- Avatar color based on clientId mod --%>
-                        <c:set var="mod" value="${p.clientId % 7}"/>
+                        <%-- Avatar color based on clientId (mod is reserved EL keyword, use colorMod) --%>
+                        <c:set var="colorMod" value="${p.clientId mod 7}"/>
                         <c:set var="ac" value="bg-indigo-100 text-indigo-700"/>
-                        <c:if test="${mod == 0}"><c:set var="ac" value="bg-violet-100 text-violet-700"/></c:if>
-                        <c:if test="${mod == 1}"><c:set var="ac" value="bg-blue-100 text-blue-700"/></c:if>
-                        <c:if test="${mod == 2}"><c:set var="ac" value="bg-cyan-100 text-cyan-700"/></c:if>
-                        <c:if test="${mod == 3}"><c:set var="ac" value="bg-emerald-100 text-emerald-700"/></c:if>
-                        <c:if test="${mod == 4}"><c:set var="ac" value="bg-amber-100 text-amber-700"/></c:if>
-                        <c:if test="${mod == 5}"><c:set var="ac" value="bg-rose-100 text-rose-700"/></c:if>
-                        <c:if test="${mod == 6}"><c:set var="ac" value="bg-pink-100 text-pink-700"/></c:if>
+                        <c:if test="${colorMod == 0}"><c:set var="ac" value="bg-violet-100 text-violet-700"/></c:if>
+                        <c:if test="${colorMod == 1}"><c:set var="ac" value="bg-blue-100 text-blue-700"/></c:if>
+                        <c:if test="${colorMod == 2}"><c:set var="ac" value="bg-cyan-100 text-cyan-700"/></c:if>
+                        <c:if test="${colorMod == 3}"><c:set var="ac" value="bg-emerald-100 text-emerald-700"/></c:if>
+                        <c:if test="${colorMod == 4}"><c:set var="ac" value="bg-amber-100 text-amber-700"/></c:if>
+                        <c:if test="${colorMod == 5}"><c:set var="ac" value="bg-rose-100 text-rose-700"/></c:if>
+                        <c:if test="${colorMod == 6}"><c:set var="ac" value="bg-pink-100 text-pink-700"/></c:if>
 
                         <%-- Risk badge class --%>
                         <c:set var="riskClass" value="risk-low"/>
