@@ -1,17 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ include file="_layout.jsp" %>
     <script>document.getElementById('nav-prets').classList.add('nav-link-active');</script>
 
     <style>
-        .avatar {
-            width: 34px; height: 34px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.7rem; font-weight: 800; flex-shrink: 0;
-        }
-        .taux-bar { height: 4px; border-radius: 9999px; background: #e2e8f0; min-width: 48px; }
-        .taux-fill { height: 100%; border-radius: 9999px; }
+        .avatar { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.7rem; font-weight:800; flex-shrink:0; }
+        .taux-bar { height:4px; border-radius:9999px; background:#e2e8f0; min-width:48px; }
+        .taux-fill { height:100%; border-radius:9999px; }
         .risk-low  { background:#dcfce7; color:#15803d; }
         .risk-mid  { background:#fef9c3; color:#a16207; }
         .risk-high { background:#fee2e2; color:#b91c1c; }
@@ -33,10 +28,9 @@
 
         <!-- Charts Row -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-8">
-            <!-- Donut répartition -->
             <div class="card p-6">
                 <h2 class="font-bold text-slate-800 text-sm mb-1">Répartition par Type</h2>
-                <p class="text-slate-400 text-xs mb-4">Distribution de l'ensemble du portefeuille</p>
+                <p class="text-slate-400 text-xs mb-4">Distribution du portefeuille</p>
                 <div class="flex items-center gap-6">
                     <div class="relative w-32 h-32 flex-shrink-0">
                         <canvas id="typePieChart"></canvas>
@@ -50,7 +44,7 @@
                                 <span class="font-bold text-slate-800 text-xs">${countImmo}</span>
                             </div>
                             <div class="h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                                <div class="h-full bg-blue-500 rounded-full" style="width: ${totalPrets > 0 ? (countImmo * 100 / totalPrets) : 0}%"></div>
+                                <div class="h-full bg-blue-500 rounded-full" style="width:${totalPrets > 0 ? countImmo * 100 / totalPrets : 0}%"></div>
                             </div>
                         </div>
                         <div>
@@ -61,13 +55,12 @@
                                 <span class="font-bold text-slate-800 text-xs">${countAuto}</span>
                             </div>
                             <div class="h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                                <div class="h-full bg-amber-400 rounded-full" style="width: ${totalPrets > 0 ? (countAuto * 100 / totalPrets) : 0}%"></div>
+                                <div class="h-full bg-amber-400 rounded-full" style="width:${totalPrets > 0 ? countAuto * 100 / totalPrets : 0}%"></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Bar taux moyen -->
             <div class="card p-6">
                 <h2 class="font-bold text-slate-800 text-sm mb-1">Taux Moyen par Type</h2>
                 <p class="text-slate-400 text-xs mb-4">Comparaison des taux d'intérêt moyens</p>
@@ -79,7 +72,6 @@
         <div class="card p-5 mb-6">
             <form action="listePrets" method="get" class="flex flex-wrap items-end gap-4">
                 <input type="hidden" name="page" value="1">
-                <!-- ID Prêt -->
                 <div class="min-w-[140px]">
                     <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">ID Prêt</label>
                     <div class="relative">
@@ -87,7 +79,6 @@
                         <input type="number" name="searchIdPret" class="input-field pl-9" placeholder="ID prêt..." value="${param.searchIdPret}">
                     </div>
                 </div>
-                <!-- ID Client -->
                 <div class="min-w-[140px]">
                     <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">ID Client</label>
                     <div class="relative">
@@ -95,7 +86,6 @@
                         <input type="number" name="searchIdClient" class="input-field pl-9" placeholder="ID client..." value="${param.searchIdClient}">
                     </div>
                 </div>
-                <!-- Type -->
                 <div class="min-w-[150px]">
                     <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Type de Prêt</label>
                     <div class="relative">
@@ -109,32 +99,30 @@
                 </div>
                 <div class="flex gap-2">
                     <button type="submit" class="btn-primary flex items-center gap-2 text-sm">
-                        <i data-lucide="search" class="w-4 h-4"></i>
-                        Filtrer
+                        <i data-lucide="search" class="w-4 h-4"></i> Filtrer
                     </button>
                     <a href="listePrets" class="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 text-slate-500 text-sm font-semibold hover:bg-slate-50 transition-colors">
-                        <i data-lucide="x" class="w-4 h-4"></i>
-                        Reset
+                        <i data-lucide="x" class="w-4 h-4"></i> Reset
                     </a>
                 </div>
             </form>
         </div>
 
-        <!-- Active filter pill -->
-        <c:if test="${!empty param.searchIdClient || !empty param.searchType || !empty param.searchIdPret}">
+        <!-- Active filter pills -->
+        <c:if test="${not empty param.searchIdClient or not empty param.searchType or not empty param.searchIdPret}">
             <div class="flex items-center gap-2 mb-4 flex-wrap">
                 <span class="text-xs text-slate-400 font-medium">Filtres actifs :</span>
-                <c:if test="${!empty param.searchIdClient}">
+                <c:if test="${not empty param.searchIdClient}">
                     <span class="inline-flex items-center gap-1.5 bg-indigo-50 text-indigo-700 text-xs font-semibold rounded-full px-3 py-1">
                         <i data-lucide="user" class="w-3 h-3"></i> Client #${param.searchIdClient}
                     </span>
                 </c:if>
-                <c:if test="${!empty param.searchType}">
+                <c:if test="${not empty param.searchType}">
                     <span class="inline-flex items-center gap-1.5 bg-indigo-50 text-indigo-700 text-xs font-semibold rounded-full px-3 py-1">
                         <i data-lucide="tag" class="w-3 h-3"></i> ${param.searchType}
                     </span>
                 </c:if>
-                <c:if test="${!empty param.searchIdPret}">
+                <c:if test="${not empty param.searchIdPret}">
                     <span class="inline-flex items-center gap-1.5 bg-indigo-50 text-indigo-700 text-xs font-semibold rounded-full px-3 py-1">
                         <i data-lucide="hash" class="w-3 h-3"></i> Prêt #${param.searchIdPret}
                     </span>
@@ -161,7 +149,7 @@
                 <tbody class="divide-y divide-slate-50">
                     <c:forEach var="p" items="${prets}">
 
-                        <%-- Avatar color based on clientId --%>
+                        <%-- Avatar color based on clientId mod --%>
                         <c:set var="mod" value="${p.clientId % 7}"/>
                         <c:set var="ac" value="bg-indigo-100 text-indigo-700"/>
                         <c:if test="${mod == 0}"><c:set var="ac" value="bg-violet-100 text-violet-700"/></c:if>
@@ -172,41 +160,45 @@
                         <c:if test="${mod == 5}"><c:set var="ac" value="bg-rose-100 text-rose-700"/></c:if>
                         <c:if test="${mod == 6}"><c:set var="ac" value="bg-pink-100 text-pink-700"/></c:if>
 
-                        <%-- Taux risk label + CSS class --%>
+                        <%-- Risk badge class --%>
                         <c:set var="riskClass" value="risk-low"/>
                         <c:set var="riskLabel" value="Faible"/>
-                        <c:if test="${p.taux >= 2 && p.taux < 4}">
+                        <c:set var="tauxFillColor" value="#10b981"/>
+                        <c:if test="${p.taux >= 2 and p.taux < 4}">
                             <c:set var="riskClass" value="risk-mid"/>
                             <c:set var="riskLabel" value="Modéré"/>
+                            <c:set var="tauxFillColor" value="#f59e0b"/>
                         </c:if>
                         <c:if test="${p.taux >= 4}">
                             <c:set var="riskClass" value="risk-high"/>
                             <c:set var="riskLabel" value="Élevé"/>
+                            <c:set var="tauxFillColor" value="#f43f5e"/>
                         </c:if>
 
-                        <%-- Durée en années + mois restants --%>
-                        <c:set var="annees" value="${p.duree / 12}"/>
+                        <%-- Durée en années + mois --%>
+                        <c:set var="annees"   value="${p.duree / 12}"/>
                         <c:set var="moisReste" value="${p.duree % 12}"/>
 
-                        <%-- Coût total = mensualité × durée --%>
+                        <%-- Coût total --%>
                         <c:set var="coutTotal" value="${p.remboursement * p.duree}"/>
 
                         <tr class="hover:bg-slate-50/80 transition-colors duration-100">
 
-                            <%-- DOSSIER: icône + ID --%>
+                            <%-- DOSSIER --%>
                             <td class="px-5 py-4">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0
-                                        ${p.type.toUpperCase() == 'IMMOBILIER' ? 'bg-blue-50' : 'bg-amber-50'}">
-                                        <c:choose>
-                                            <c:when test="${p.type.toUpperCase() == 'IMMOBILIER'}">
+                                    <c:choose>
+                                        <c:when test="${p.type == 'IMMOBILIER'}">
+                                            <div class="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
                                                 <i data-lucide="home" class="w-4 h-4 text-blue-500"></i>
-                                            </c:when>
-                                            <c:otherwise>
+                                            </div>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="w-9 h-9 rounded-xl bg-amber-50 flex items-center justify-center flex-shrink-0">
                                                 <i data-lucide="car" class="w-4 h-4 text-amber-500"></i>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </div>
+                                            </div>
+                                        </c:otherwise>
+                                    </c:choose>
                                     <div>
                                         <p class="font-semibold text-slate-700 text-sm leading-none">Dossier</p>
                                         <p class="font-mono text-xs text-slate-400 mt-0.5">#${p.idPret}</p>
@@ -214,7 +206,7 @@
                                 </div>
                             </td>
 
-                            <%-- CLIENT: avatar coloré + lien --%>
+                            <%-- CLIENT --%>
                             <td class="px-5 py-4">
                                 <a href="listePrets?searchIdClient=${p.clientId}" class="flex items-center gap-2.5 group" title="Voir tous les prêts de ce client">
                                     <div class="avatar ${ac}">C${p.clientId}</div>
@@ -227,17 +219,13 @@
 
                             <%-- MENSUALITÉ --%>
                             <td class="px-5 py-4">
-                                <p class="font-bold text-slate-800 text-base leading-none">
-                                    <fmt:formatNumber value="${p.remboursement}" maxFractionDigits="0"/> <span class="text-slate-400 text-xs font-normal">€</span>
-                                </p>
+                                <p class="font-bold text-slate-800 text-base leading-none">${p.remboursement} <span class="text-slate-400 text-xs font-normal">€</span></p>
                                 <p class="text-xs text-slate-400 mt-1">/ mois</p>
                             </td>
 
                             <%-- COÛT TOTAL --%>
                             <td class="px-5 py-4">
-                                <p class="font-bold text-indigo-700 text-sm leading-none">
-                                    <fmt:formatNumber value="${coutTotal}" maxFractionDigits="0"/> <span class="text-indigo-400 text-xs font-normal">€</span>
-                                </p>
+                                <p class="font-bold text-indigo-700 text-sm leading-none">${coutTotal} <span class="text-indigo-400 text-xs font-normal">€</span></p>
                                 <p class="text-xs text-slate-400 mt-1">sur toute la durée</p>
                             </td>
 
@@ -260,7 +248,7 @@
                             <%-- TYPE badge --%>
                             <td class="px-5 py-4 text-center">
                                 <c:choose>
-                                    <c:when test="${p.type.toUpperCase() == 'IMMOBILIER'}">
+                                    <c:when test="${p.type == 'IMMOBILIER'}">
                                         <span class="inline-flex items-center gap-1.5 badge-immo text-xs font-bold rounded-full px-3 py-1.5 uppercase tracking-wide whitespace-nowrap">
                                             <i data-lucide="home" class="w-3 h-3"></i> Immo
                                         </span>
@@ -280,15 +268,13 @@
                                     <span class="text-xs font-bold rounded-md px-2 py-0.5 ${riskClass}">${riskLabel}</span>
                                 </div>
                                 <div class="taux-bar">
-                                    <div class="taux-fill ${riskClass == 'risk-low' ? 'bg-emerald-500' : (riskClass == 'risk-mid' ? 'bg-amber-400' : 'bg-rose-500')}"
-                                         style="width:min(${p.taux * 10}%, 100%)"></div>
+                                    <div class="taux-fill" style="width:min(${p.taux * 10}%, 100%); background:${tauxFillColor};"></div>
                                 </div>
                             </td>
 
                             <%-- ANALYSE IA --%>
                             <td class="px-5 py-4 text-center">
-                                <a href="predire?idClient=${p.clientId}"
-                                   title="Lancer la prédiction IA pour ce client"
+                                <a href="predire?idClient=${p.clientId}" title="Lancer la prédiction IA"
                                    class="inline-flex items-center justify-center w-8 h-8 rounded-lg border border-indigo-200 text-indigo-500 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 transition-all duration-150">
                                     <i data-lucide="brain-circuit" class="w-4 h-4"></i>
                                 </a>
@@ -312,12 +298,12 @@
                     </c:if>
                 </tbody>
 
-                <!-- Summary footer row -->
-                <c:if test="${!empty prets}">
+                <%-- Summary footer --%>
+                <c:if test="${not empty prets}">
                     <tfoot>
                         <tr class="bg-slate-50 border-t-2 border-slate-200">
                             <td colspan="2" class="px-5 py-3">
-                                <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Résumé page</span>
+                                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Résumé — page actuelle</span>
                             </td>
                             <td class="px-5 py-3">
                                 <p class="text-xs text-slate-400">Total mensualités</p>
@@ -328,7 +314,7 @@
                                 <p class="font-bold text-indigo-600 text-sm" id="sumCout">—</p>
                             </td>
                             <td class="px-5 py-3">
-                                <p class="text-xs text-slate-400">Durée moy.</p>
+                                <p class="text-xs text-slate-400">Durée moyenne</p>
                                 <p class="font-bold text-slate-700 text-sm" id="avgDuree">—</p>
                             </td>
                             <td class="px-5 py-3">
@@ -350,7 +336,7 @@
                 <span class="text-xs text-slate-500">
                     Page <span class="font-semibold text-slate-700">${currentPage}</span> sur
                     <span class="font-semibold text-slate-700">${totalPages < 1 ? 1 : totalPages}</span>
-                    &nbsp;·&nbsp; <span class="font-semibold text-slate-700">${prets.size()}</span> résultats affichés
+                    &nbsp;·&nbsp; <span class="font-semibold text-slate-700">${prets.size()}</span> résultats
                 </span>
                 <div class="flex items-center gap-2">
                     <a href="listePrets?page=${currentPage - 1}&searchIdPret=${param.searchIdPret}&searchType=${param.searchType}&searchIdClient=${param.searchIdClient}"
@@ -369,7 +355,6 @@
 <script>
     lucide.createIcons();
 
-    // ── Chart.js ──────────────────────────────────────────
     const immo    = parseInt('${countImmo}') || 0;
     const auto    = parseInt('${countAuto}') || 0;
     const total   = immo + auto;
@@ -380,72 +365,51 @@
         type: 'doughnut',
         data: {
             labels: ['Immobilier', 'Automobile'],
-            datasets: [{
-                data: total > 0 ? [immo, auto] : [1, 1],
-                backgroundColor: ['#3b82f6', '#fbbf24'],
-                borderWidth: 2,
-                borderColor: ['#2563eb', '#f59e0b'],
-                hoverOffset: 4
-            }]
+            datasets: [{ data: total > 0 ? [immo, auto] : [1,1], backgroundColor: ['#3b82f6','#fbbf24'], borderWidth: 2, borderColor: ['#2563eb','#f59e0b'], hoverOffset: 4 }]
         },
-        options: {
-            cutout: '68%',
-            plugins: {
-                legend: { display: false },
-                tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${total > 0 ? ctx.raw : 0}` } }
-            }
-        }
+        options: { cutout: '68%', plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${total > 0 ? ctx.raw : 0}` } } } }
     });
 
     new Chart(document.getElementById('tauxBarChart'), {
         type: 'bar',
         data: {
             labels: ['Immobilier', 'Automobile'],
-            datasets: [{
-                label: 'Taux moyen (%)',
-                data: [avgImmo, avgAuto],
-                backgroundColor: ['rgba(59,130,246,0.12)', 'rgba(251,191,36,0.12)'],
-                borderColor: ['#3b82f6', '#fbbf24'],
-                borderWidth: 2,
-                borderRadius: 8
-            }]
+            datasets: [{ label: 'Taux moyen (%)', data: [avgImmo, avgAuto], backgroundColor: ['rgba(59,130,246,0.12)', 'rgba(251,191,36,0.12)'], borderColor: ['#3b82f6', '#fbbf24'], borderWidth: 2, borderRadius: 8 }]
         },
         options: {
             indexAxis: 'y',
             plugins: { legend: { display: false } },
             scales: {
-                x: {
-                    beginAtZero: true,
-                    grid: { color: '#f1f5f9' },
-                    ticks: { callback: v => v + '%', font: { size: 11 } }
-                },
-                y: {
-                    grid: { display: false },
-                    ticks: { font: { size: 12, weight: '600' } }
-                }
+                x: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { callback: v => v + '%', font: { size: 11 } } },
+                y: { grid: { display: false }, ticks: { font: { size: 12, weight: '600' } } }
             }
         }
     });
 
-    // ── Summary row calculations ───────────────────────────
+    // Summary row
     (function() {
-        const rows = document.querySelectorAll('tbody tr[class*="hover"]');
+        const rows = document.querySelectorAll('tbody tr');
         let sumMens = 0, sumCout = 0, sumDuree = 0, sumTaux = 0, n = 0;
         rows.forEach(row => {
             const cells = row.querySelectorAll('td');
             if (cells.length < 7) return;
-            const mens  = parseFloat(cells[2].querySelector('p')?.textContent?.replace(/\s/g,'').replace(',','.')) || 0;
-            const cout  = parseFloat(cells[3].querySelector('p')?.textContent?.replace(/\s/g,'').replace(',','.')) || 0;
-            const duree = parseFloat(cells[4].querySelector('p:last-child')?.textContent) || 0;
-            const taux  = parseFloat(cells[6].querySelector('span')?.textContent) || 0;
+            // Mensualité: 3rd td, first p text before "€"
+            const mensText = cells[2].querySelector('p')?.textContent?.trim().split(' ')[0] || '0';
+            const mens  = parseFloat(mensText.replace(',','.')) || 0;
+            // Durée: 5th td, last p (mois)
+            const dureeText = cells[4].querySelectorAll('p')[1]?.textContent?.trim().split(' ')[0] || '0';
+            const duree = parseFloat(dureeText) || 0;
+            // Taux: 7th td, first span text
+            const tauxText = cells[6].querySelector('span')?.textContent?.replace('%','').trim() || '0';
+            const taux  = parseFloat(tauxText) || 0;
             sumMens  += mens;
-            sumCout  += cout;
+            sumCout  += mens * duree;
             sumDuree += duree;
             sumTaux  += taux;
             n++;
         });
-        const fmt = v => v.toLocaleString('fr-FR', {maximumFractionDigits: 0}) + ' €';
         if (n > 0) {
+            const fmt = v => Math.round(v).toLocaleString('fr-FR') + ' €';
             document.getElementById('sumMensualite').textContent = fmt(sumMens);
             document.getElementById('sumCout').textContent       = fmt(sumCout);
             document.getElementById('avgDuree').textContent      = Math.round(sumDuree / n) + ' mois';
