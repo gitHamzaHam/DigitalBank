@@ -3,6 +3,17 @@
 <%@ include file="_layout.jsp" %>
     <script>document.getElementById('nav-clients').classList.add('nav-link-active');</script>
 
+    <style>
+        .avatar {
+            width: 36px; height: 36px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.75rem; font-weight: 800; letter-spacing: 0.02em;
+            flex-shrink: 0;
+        }
+        .revenue-bar { height: 5px; border-radius: 9999px; background: #e2e8f0; overflow: hidden; }
+        .revenue-fill { height: 100%; border-radius: 9999px; transition: width 0.3s; }
+    </style>
+
     <main class="max-w-7xl mx-auto px-6 py-10">
 
         <!-- Page Header -->
@@ -60,49 +71,104 @@
             <table class="w-full text-sm">
                 <thead>
                     <tr class="border-b border-slate-100 bg-slate-50">
-                        <th class="text-left px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Identifiant</th>
-                        <th class="text-left px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Ville</th>
-                        <th class="text-left px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Code Postal</th>
-                        <th class="text-left px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Revenu Mensuel</th>
-                        <th class="text-center px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Actions</th>
+                        <th class="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Client</th>
+                        <th class="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Localisation</th>
+                        <th class="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Revenu Mensuel</th>
+                        <th class="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Niveau</th>
+                        <th class="text-center px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-50">
                     <c:forEach var="c" items="${clients}">
-                        <tr class="hover:bg-slate-50 transition-colors duration-100">
+                        <%-- Determine avatar color based on city --%>
+                        <c:set var="avatarClass" value="bg-indigo-100 text-indigo-700"/>
+                        <c:if test="${c.ville == 'PARIS'}">   <c:set var="avatarClass" value="bg-violet-100 text-violet-700"/></c:if>
+                        <c:if test="${c.ville == 'LYON'}">    <c:set var="avatarClass" value="bg-blue-100 text-blue-700"/></c:if>
+                        <c:if test="${c.ville == 'MARSEILLE'}"><c:set var="avatarClass" value="bg-cyan-100 text-cyan-700"/></c:if>
+                        <c:if test="${c.ville == 'TOULOUSE'}"><c:set var="avatarClass" value="bg-rose-100 text-rose-700"/></c:if>
+                        <c:if test="${c.ville == 'NICE'}">    <c:set var="avatarClass" value="bg-amber-100 text-amber-700"/></c:if>
+                        <c:if test="${c.ville == 'BORDEAUX'}"><c:set var="avatarClass" value="bg-emerald-100 text-emerald-700"/></c:if>
+
+                        <%-- Revenue level --%>
+                        <c:set var="revLevel" value="Faible"/>
+                        <c:set var="revColor" value="#f43f5e"/>
+                        <c:set var="revWidth" value="25"/>
+                        <c:if test="${c.revenu >= 2000 && c.revenu < 4000}">
+                            <c:set var="revLevel" value="Moyen"/>
+                            <c:set var="revColor" value="#f59e0b"/>
+                            <c:set var="revWidth" value="55"/>
+                        </c:if>
+                        <c:if test="${c.revenu >= 4000}">
+                            <c:set var="revLevel" value="Élevé"/>
+                            <c:set var="revColor" value="#10b981"/>
+                            <c:set var="revWidth" value="90"/>
+                        </c:if>
+
+                        <tr class="hover:bg-slate-50/70 transition-colors duration-100">
+
+                            <%-- CLIENT COLUMN: Avatar + ID --%>
                             <td class="px-6 py-4">
-                                <span class="font-mono text-xs font-semibold bg-slate-100 text-slate-600 rounded-md px-2 py-1">#${c.id}</span>
+                                <div class="flex items-center gap-3">
+                                    <div class="avatar ${avatarClass}">
+                                        ${c.ville.substring(0,1)}${c.id % 10}
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-slate-700 text-sm">Client</p>
+                                        <p class="font-mono text-xs text-slate-400">#${c.id}</p>
+                                    </div>
+                                </div>
                             </td>
+
+                            <%-- LOCALISATION: Ville + CP grouped --%>
                             <td class="px-6 py-4">
-                                <span class="inline-flex items-center gap-1.5 bg-indigo-50 text-indigo-700 text-xs font-semibold rounded-full px-3 py-1 uppercase tracking-wide">
-                                    <i data-lucide="map-pin" class="w-3 h-3"></i>
-                                    ${c.ville}
-                                </span>
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-slate-400 flex-shrink-0"></i>
+                                    <div>
+                                        <p class="font-semibold text-slate-700 text-sm capitalize">${c.ville.toLowerCase().substring(0,1).toUpperCase()}${c.ville.toLowerCase().substring(1)}</p>
+                                        <p class="text-xs text-slate-400 font-mono">${c.cp}</p>
+                                    </div>
+                                </div>
                             </td>
-                            <td class="px-6 py-4 text-slate-600 font-medium">${c.cp}</td>
+
+                            <%-- REVENU --%>
                             <td class="px-6 py-4">
-                                <span class="font-bold text-slate-800">${c.revenu}</span>
-                                <span class="text-slate-400 text-xs ml-1">€ / mois</span>
+                                <p class="font-bold text-slate-800 text-base">
+                                    ${c.revenu} <span class="text-slate-400 text-xs font-normal">€</span>
+                                </p>
+                                <p class="text-xs text-slate-400 mt-0.5">par mois</p>
                             </td>
+
+                            <%-- NIVEAU BAR --%>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-2.5 min-w-[100px]">
+                                    <div class="revenue-bar flex-1">
+                                        <div class="revenue-fill" style="width:${revWidth}%; background:${revColor};"></div>
+                                    </div>
+                                    <span class="text-xs font-semibold whitespace-nowrap" style="color:${revColor};">${revLevel}</span>
+                                </div>
+                            </td>
+
+                            <%-- ACTIONS --%>
                             <td class="px-6 py-4">
                                 <div class="flex items-center justify-center gap-2">
                                     <a href="listePrets?searchIdClient=${c.id}" title="Voir les prêts"
-                                       class="w-8 h-8 rounded-lg border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-600 transition-all duration-150">
+                                       class="w-8 h-8 rounded-lg border border-slate-200 flex items-center justify-center text-slate-400 hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-600 transition-all duration-150">
                                         <i data-lucide="landmark" class="w-3.5 h-3.5"></i>
                                     </a>
                                     <a href="editerClient.jsp?id=${c.id}&ville=${c.ville}&cp=${c.cp}&revenu=${c.revenu}" title="Modifier"
-                                       class="w-8 h-8 rounded-lg border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-600 transition-all duration-150">
+                                       class="w-8 h-8 rounded-lg border border-slate-200 flex items-center justify-center text-slate-400 hover:bg-amber-50 hover:border-amber-200 hover:text-amber-600 transition-all duration-150">
                                         <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
                                     </a>
                                     <a href="supprimerClient?id=${c.id}" title="Supprimer"
                                        onclick="return confirm('Supprimer définitivement le client #${c.id} ?')"
-                                       class="w-8 h-8 rounded-lg border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-rose-50 hover:border-rose-200 hover:text-rose-600 transition-all duration-150">
+                                       class="w-8 h-8 rounded-lg border border-slate-200 flex items-center justify-center text-slate-400 hover:bg-rose-50 hover:border-rose-200 hover:text-rose-600 transition-all duration-150">
                                         <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                                     </a>
                                 </div>
                             </td>
                         </tr>
                     </c:forEach>
+
                     <c:if test="${empty clients}">
                         <tr>
                             <td colspan="5" class="px-6 py-16 text-center">
@@ -122,7 +188,9 @@
             <!-- Pagination -->
             <div class="flex items-center justify-between px-6 py-4 border-t border-slate-100 bg-white">
                 <span class="text-xs text-slate-500">
-                    Page <span class="font-semibold text-slate-700">${currentPage}</span> sur <span class="font-semibold text-slate-700">${totalPages < 1 ? 1 : totalPages}</span>
+                    Page <span class="font-semibold text-slate-700">${currentPage}</span> sur
+                    <span class="font-semibold text-slate-700">${totalPages < 1 ? 1 : totalPages}</span>
+                    &nbsp;·&nbsp; ${clients.size()} résultats affichés
                 </span>
                 <div class="flex items-center gap-2">
                     <a href="listeClients?page=${currentPage - 1}&searchId=${param.searchId}&searchVille=${param.searchVille}"
