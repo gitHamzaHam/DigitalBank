@@ -32,7 +32,12 @@ public class ListeClientsServlet extends HttpServlet {
             ResultSet rsV = conn.createStatement().executeQuery("SELECT DISTINCT ville FROM clients ORDER BY ville");
             while (rsV.next()) listeVilles.add(rsV.getString("ville"));
 
-            // --- NOUVEAU : CALCUL DU NOMBRE TOTAL DE PAGES ---
+            // Nombre total de clients (pour le KPI dashboard)
+            ResultSet rsTotalClients = conn.createStatement().executeQuery("SELECT COUNT(*) FROM clients");
+            int totalClients = 0;
+            if (rsTotalClients.next()) totalClients = rsTotalClients.getInt(1);
+
+            // CALCUL DU NOMBRE TOTAL DE PAGES
             StringBuilder countSql = new StringBuilder("SELECT COUNT(*) FROM clients WHERE 1=1");
             if (sId != null && !sId.isEmpty()) countSql.append(" AND identifiant = ").append(Integer.parseInt(sId));
             if (sVille != null && !sVille.isEmpty()) countSql.append(" AND ville = '").append(sVille).append("'");
@@ -42,9 +47,7 @@ public class ListeClientsServlet extends HttpServlet {
             int totalRecords = 0;
             if (rsCount.next()) totalRecords = rsCount.getInt(1);
             
-            // Calcul du nombre de pages total
             int totalPages = (int) Math.ceil((double) totalRecords / nbParPage);
-            // --------------------------------------------------
 
             // 2. CONSTRUCTION DE LA REQUÊTE PRINCIPALE
             StringBuilder sql = new StringBuilder("SELECT * FROM clients WHERE 1=1");
@@ -62,7 +65,8 @@ public class ListeClientsServlet extends HttpServlet {
             request.setAttribute("clients", listeClients);
             request.setAttribute("villes", listeVilles);
             request.setAttribute("currentPage", page);
-            request.setAttribute("totalPages", totalPages); // <--- AJOUTÉ
+            request.setAttribute("totalPages", totalPages);
+            request.setAttribute("totalClients", totalClients); // <--- KPI dashboard
             
             request.getRequestDispatcher("clients.jsp").forward(request, response);
         } catch (Exception e) { e.printStackTrace(); }
