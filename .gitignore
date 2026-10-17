@@ -1,0 +1,38 @@
+# ========================
+# Java EE / IntelliJ
+# ========================
+*.class
+*.jar
+*.war
+*.ear
+/backend/build/
+/backend/out/
+/backend/.idea/workspace.xml
+/backend/.idea/tasks.xml
+/backend/.idea/shelf/
+/backend/.idea/.gitignore
+/backend/.smarttomcat/
+*.iml
+
+# Maven
+target/
+
+# ========================
+# Python / AI
+# ========================
+ai/venv/
+ai/__pycache__/
+ai/*.pyc
+ai/.env
+*.egg-info/
+dist/
+.eggs/
+
+# ========================
+# OS & Editors
+# ========================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/settings.json
