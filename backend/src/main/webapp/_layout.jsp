@@ -40,14 +40,14 @@
 <!-- TOP NAVBAR -->
 <nav class="bg-white border-b border-slate-100 sticky top-0 z-50" style="box-shadow: 0 1px 3px rgba(0,0,0,0.06);">
     <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <a href="menu.jsp" class="flex items-center gap-2.5 font-extrabold text-xl text-indigo-600 tracking-tight">
+        <a href="menu" class="flex items-center gap-2.5 font-extrabold text-xl text-indigo-600 tracking-tight">
             <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
                 <i data-lucide="landmark" class="w-4 h-4 text-white"></i>
             </div>
             DigitalBank
         </a>
         <div class="flex items-center gap-7 text-sm font-medium text-slate-500">
-            <a href="menu.jsp" class="hover:text-indigo-600 transition-colors duration-150" id="nav-accueil">Accueil</a>
+            <a href="menu" class="hover:text-indigo-600 transition-colors duration-150" id="nav-accueil">Accueil</a>
             <a href="listeClients?page=1" class="hover:text-indigo-600 transition-colors duration-150" id="nav-clients">Clients</a>
             <a href="listePrets" class="hover:text-indigo-600 transition-colors duration-150" id="nav-prets">Prêts</a>
             <div class="h-5 w-px bg-slate-200"></div>

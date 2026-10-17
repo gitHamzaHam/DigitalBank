@@ -65,7 +65,7 @@
 
             <!-- CTA Buttons -->
             <div class="flex flex-col gap-3">
-                <a href="menu.jsp" class="btn-primary flex items-center justify-center gap-2 text-sm">
+                <a href="menu" class="btn-primary flex items-center justify-center gap-2 text-sm">
                     <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
                     Retour au Tableau de Bord
                 </a>

@@ -6,7 +6,7 @@
 
         <!-- Breadcrumb -->
         <nav class="flex items-center gap-2 text-xs text-slate-400 mb-8">
-            <a href="menu.jsp" class="hover:text-indigo-600 transition-colors">Accueil</a>
+            <a href="menu" class="hover:text-indigo-600 transition-colors">Accueil</a>
             <i data-lucide="chevron-right" class="w-3 h-3"></i>
             <a href="listeClients?page=1" class="hover:text-indigo-600 transition-colors">Clients</a>
             <i data-lucide="chevron-right" class="w-3 h-3"></i>

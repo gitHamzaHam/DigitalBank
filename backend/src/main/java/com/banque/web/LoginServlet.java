@@ -36,7 +36,7 @@ public class LoginServlet extends HttpServlet {
                 // 3. Si trouvé, on crée une session et on va vers le menu
                 HttpSession session = request.getSession();
                 session.setAttribute("adminConnecte", rs.getString("nom_complet"));
-                response.sendRedirect("menu.jsp");
+                response.sendRedirect("menu");
             } else {
                 // 4. Si non trouvé, on revient au login avec un message
                 response.sendRedirect("index.jsp?error=1");
