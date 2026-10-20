@@ -38,7 +38,6 @@ Le serveur JEE communique avec le serveur Flask via des requêtes HTTP REST (JSO
 - Flask
 - Scikit-learn
 - Joblib
-- Modèle Random Forest
 - Régression logistique
 
 ### Frontend
@@ -54,7 +53,6 @@ Le serveur JEE communique avec le serveur Flask via des requêtes HTTP REST (JSO
 
 - IntelliJ IDEA
 - Git / GitHub
-- Postman / CURL
 
 ---
 
@@ -104,7 +102,6 @@ L'accès est sécurisé par :
 
 - Authentification (login / mot de passe)
 - Sessions HTTP gérées côté serveur
-- Redirection automatique si session absente
 
 ---
 
